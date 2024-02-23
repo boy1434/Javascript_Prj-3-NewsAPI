@@ -1,0 +1,28 @@
+.head-line{
+    margin-top:1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.head-line svg{
+    width: 450px;
+}
+
+.menus{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 4px double black;
+}
+.menus button {
+    background: none;
+    border: 0;
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+    font-size: large;
+    margin: 5px;
+}
+.menus button:hover {
+    background-color: darkgray;
+}
