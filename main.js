@@ -61,6 +61,17 @@ const render = () => {
 
 getNews();
 
+const getNewsKeyword = async() => {
+    const keyword = document.getElementById('search-input').value;
+    console.log(keyword)
+    const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&q=${keyword}&apiKey=${API_KEY}`);
+
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    newsList = data.articles;
+    render();
+}
 
 
 //2. 카테고리별 뉴스 가져오기
