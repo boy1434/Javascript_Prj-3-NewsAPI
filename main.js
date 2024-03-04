@@ -1,4 +1,4 @@
-const API_KEY= `50b049f2fbce4d8f94a2df193555acd`
+const API_KEY= `50b049f2fbce4d8f94a2df193555ac3d`
 let newsList = [];
 const menus = document.querySelectorAll('.menus button');
 menus.forEach((menu) =>
@@ -16,6 +16,9 @@ let url =  new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API
 
     const data = await response.json();
     if(response.status === 200){
+        if(data.articles.length===0){
+            throw new Error("No result for this search");
+        }
         newsList = data.articles;
         render();    
     } else {
