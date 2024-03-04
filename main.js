@@ -4,37 +4,36 @@ const menus = document.querySelectorAll('.menus button');
 menus.forEach((menu) =>
     menu.addEventListener("click", (e) => getNewsCategory(e) ) 
     );
+let url =  new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
 
-    //1. 버튼에 클릭이벤트 주기
-const getNewsCategory = async(e) => {
-    const category = e.target.textContent.toLowerCase();
-    console.log(category);
-    const url = new URL(
-        `https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`)
-
+// 반복되는 함수 리팩토링
+ const getNews = async() => {
     const response = await fetch(url);
     const data = await response.json();
     newsList = data.articles;
     render();
-    console.log(data); 
-          
+ }
+    
+// 카테고리 클릭시 보여주는 함수
+const getNewsCategory = async(e) => {
+    const category = e.target.textContent.toLowerCase();
+    url = new URL(
+        `https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`)
+
+    getNews();      
 }
 
 // 뉴스를 가지고 오는 함수
- const getNews = async() => {
-    const url = new URL(
+ const getLatesNews = async() => {
+    url = new URL(
         `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
 
         // 데이터 요청
-    const response = await fetch(url);
-    const data = await response.json();
-    newsList = data.articles;
-    render();
-    console.log(newsList);
+        getNews();   
 }
 
 
-
+// 뉴스 보여주는 함수
 const render = () => {
     let newsHTML = ``;
     newsHTML = newsList.map(
@@ -58,19 +57,16 @@ const render = () => {
 
     document.getElementById('news-board').innerHTML = newsHTML;
 }
+getLatesNews();
 
-getNews();
 
+// 검색 함수
 const getNewsKeyword = async() => {
     const keyword = document.getElementById('search-input').value;
-    console.log(keyword)
-    const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&q=${keyword}&apiKey=${API_KEY}`);
+    
+    url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&q=${keyword}&apiKey=${API_KEY}`);
 
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log(data);
-    newsList = data.articles;
-    render();
+    getNews(); 
 }
 
 
