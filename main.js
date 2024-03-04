@@ -22,7 +22,8 @@ let url =  new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API
         throw new Error(data.message);
     }
     } catch(error){
-        alert(error.message);
+        
+        errorRender(error.message);
     }
 
     
@@ -84,4 +85,11 @@ const getNewsKeyword = async() => {
 }
 
 // 에러메세지만 보여주는 함수 
+const errorRender =  (errorMessage) => {
+    const errorHTML =
+    `<div class="alert alert-danger">
+        ${errorMessage}
+    </div>`
 
+    document.getElementById("news-board").innerHTML=errorHTML;
+}
