@@ -37,3 +37,19 @@
     border-bottom: 2px solid black;
     margin-bottom: 5px;
 }
+
+.search{
+    display: flex;
+    padding: 10px;
+}
+
+#search-input{
+    border-radius: 8px;
+    margin: 4px;
+    padding: 5px;
+}
+
+.search button{
+    border-radius: 8px;
+    background-color: #ebebeb;
+}

@@ -1,4 +1,4 @@
-const API_KEY= `50b049f2fbce4d8f94a2df193555ac3d`
+const API_KEY= `50b049f2fbce4d8f94a2df193555acd`
 let newsList = [];
 const menus = document.querySelectorAll('.menus button');
 menus.forEach((menu) =>
@@ -8,10 +8,24 @@ let url =  new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API
 
 // 반복되는 함수 리팩토링
  const getNews = async() => {
+
+    // 에러 발생시 처리하는 함수
+    try{
+
     const response = await fetch(url);
+
     const data = await response.json();
-    newsList = data.articles;
-    render();
+    if(response.status === 200){
+        newsList = data.articles;
+        render();    
+    } else {
+        throw new Error(data.message);
+    }
+    } catch(error){
+        alert(error.message);
+    }
+
+    
  }
     
 // 카테고리 클릭시 보여주는 함수
@@ -69,7 +83,5 @@ const getNewsKeyword = async() => {
     getNews(); 
 }
 
-
-//2. 카테고리별 뉴스 가져오기
-//3. 가져온 카테고리별 뉴스 보여주기
+// 에러메세지만 보여주는 함수 
 
