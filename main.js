@@ -5,6 +5,10 @@ menus.forEach((menu) =>
     menu.addEventListener("click", (e) => getNewsCategory(e) ) 
     );
 let url =  new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
+let totalResults = 0;
+let page = 1;
+const pageSize = 10;
+const groupSize = 5;
 
 // 반복되는 함수 리팩토링
  const getNews = async() => {
@@ -16,11 +20,13 @@ let url =  new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API
 
     const data = await response.json();
     if(response.status === 200){
-        if(data.articles.length===0){
+        if(data.articles.length===0) {
             throw new Error("No result for this search");
         }
         newsList = data.articles;
+        totalResults = data.totalResults;
         render();    
+        pagiNationRender();
     } else {
         throw new Error(data.message);
     }
@@ -75,7 +81,7 @@ const render = () => {
 
     document.getElementById('news-board').innerHTML = newsHTML;
 }
-getLatesNews();
+
 
 
 // 검색 함수
@@ -96,3 +102,39 @@ const errorRender =  (errorMessage) => {
 
     document.getElementById("news-board").innerHTML=errorHTML;
 }
+
+const pagiNationRender = () =>{
+    const pageGroup = Math.ceil(page/groupSize);
+    const lastPage = pageGroup*groupSize;
+    const firstPage = lastPage - (groupSize -1);
+
+    let paginationHTML='';
+
+    for(let i =firstPage; i <=lastPage; i++) {
+        paginationHTML += `       
+        <li class="page-item"><a class="page-link" href="#">${i}</a></li>
+        `
+    }
+
+    document.querySelector(".pagination").innerHTML = paginationHTML;
+    
+//     <nav aria-label="Page navigation example">
+//   <ul class="pagination">
+//     <li class="page-item">
+//       <a class="page-link" href="#" aria-label="Previous">
+//         <span aria-hidden="true">&laquo;</span>
+//       </a>
+//     </li>
+//     <li class="page-item"><a class="page-link" href="#">1</a></li>
+//     <li class="page-item"><a class="page-link" href="#">2</a></li>
+//     <li class="page-item"><a class="page-link" href="#">3</a></li>
+//     <li class="page-item">
+//       <a class="page-link" href="#" aria-label="Next">
+//         <span aria-hidden="true">&raquo;</span>
+//       </a>
+//     </li>
+//   </ul>
+// </nav>
+}
+
+getLatesNews();
