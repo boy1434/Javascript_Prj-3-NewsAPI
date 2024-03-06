@@ -7,7 +7,7 @@ menus.forEach((menu) =>
 let url =  new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
 let totalResults = 0;
 let page = 1;
-const pageSize = 10;
+const pageSize = 7
 const groupSize = 5;
 
 // 반복되는 함수 리팩토링
@@ -15,9 +15,10 @@ const groupSize = 5;
 
     // 에러 발생시 처리하는 함수
     try{
+        url.searchParams.set("page", page); // => &page=page
+        url.searchParams.set("pageSize", pageSize);
 
     const response = await fetch(url);
-
     const data = await response.json();
     if(response.status === 200){
         if(data.articles.length===0) {
@@ -112,7 +113,7 @@ const pagiNationRender = () =>{
 
     for(let i =firstPage; i <=lastPage; i++) {
         paginationHTML += `       
-        <li class="page-item"><a class="page-link" href="#">${i}</a></li>
+        <li class="page-item" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>
         `
     }
 
@@ -135,6 +136,12 @@ const pagiNationRender = () =>{
 //     </li>
 //   </ul>
 // </nav>
+}
+// 페이지 별 뉴스 보여주는 함수
+const moveToPage = (pageNum) =>{
+    console.log("moveToPage", pageNum)
+    page = pageNum;
+    getNews();
 }
 
 getLatesNews();
