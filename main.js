@@ -7,7 +7,7 @@ menus.forEach((menu) =>
 let url =  new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
 let totalResults = 0;
 let page = 1;
-const pageSize = 7
+const pageSize = 10;
 const groupSize = 5;
 
 // 반복되는 함수 리팩토링
@@ -20,6 +20,7 @@ const groupSize = 5;
 
     const response = await fetch(url);
     const data = await response.json();
+    console.log("ddd",data);
     if(response.status === 200){
         if(data.articles.length===0) {
             throw new Error("No result for this search");
@@ -49,7 +50,7 @@ const getNewsCategory = async(e) => {
 }
 
 // 뉴스를 가지고 오는 함수
- const getLatesNews = async() => {
+ const getLatestNews = async() => {
     url = new URL(
         `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
 
@@ -103,11 +104,20 @@ const errorRender =  (errorMessage) => {
 
     document.getElementById("news-board").innerHTML=errorHTML;
 }
-
+// 페이지 갯수 보여주는 함수
 const pagiNationRender = () =>{
+
+    const totalPages = Math.ceil(totalResults / pageSize);
     const pageGroup = Math.ceil(page/groupSize);
-    const lastPage = pageGroup*groupSize;
-    const firstPage = lastPage - (groupSize -1);
+
+    let lastPage = pageGroup * groupSize;
+    if(lastPage > totalPages) {
+        lastPage = totalPages;
+    }
+    
+
+    const firstPage = lastPage - (groupSize -1)<=0? 1 : lastPage - (groupSize -1);
+    
 
     let paginationHTML='';
 
@@ -119,23 +129,7 @@ const pagiNationRender = () =>{
 
     document.querySelector(".pagination").innerHTML = paginationHTML;
     
-//     <nav aria-label="Page navigation example">
-//   <ul class="pagination">
-//     <li class="page-item">
-//       <a class="page-link" href="#" aria-label="Previous">
-//         <span aria-hidden="true">&laquo;</span>
-//       </a>
-//     </li>
-//     <li class="page-item"><a class="page-link" href="#">1</a></li>
-//     <li class="page-item"><a class="page-link" href="#">2</a></li>
-//     <li class="page-item"><a class="page-link" href="#">3</a></li>
-//     <li class="page-item">
-//       <a class="page-link" href="#" aria-label="Next">
-//         <span aria-hidden="true">&raquo;</span>
-//       </a>
-//     </li>
-//   </ul>
-// </nav>
+
 }
 // 페이지 별 뉴스 보여주는 함수
 const moveToPage = (pageNum) =>{
@@ -144,4 +138,4 @@ const moveToPage = (pageNum) =>{
     getNews();
 }
 
-getLatesNews();
+getLatestNews();
