@@ -123,7 +123,7 @@ const pagiNationRender = () =>{
 
     for(let i =firstPage; i <=lastPage; i++) {
         paginationHTML += `       
-        <li class="page-item" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>
+        <li class="page-item ${i === page ? "active":''}" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>
         `
     }
 
